@@ -7,15 +7,23 @@ import java.util.List;
 
 @Configuration
 @ConfigurationProperties(prefix = "twitch")
-public class ConfigProperties {
+public class TwitchConfigProperties {
 
     private List<String> channelIds;
-
-    private String webhookUrl;
 
     private String clientId;
 
     private String clientSecret;
+
+    private int delayClipEvaluation;
+
+    public int getDelayClipEvaluation() {
+        return delayClipEvaluation;
+    }
+
+    public void setDelayClipEvaluation(int delayClipEvaluation) {
+        this.delayClipEvaluation = delayClipEvaluation;
+    }
 
     public String getClientSecret() {
         return clientSecret;
@@ -27,14 +35,6 @@ public class ConfigProperties {
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
-    }
-
-    public String getWebhookUrl() {
-        return webhookUrl;
-    }
-
-    public void setWebhookUrl(String webhookUrl) {
-        this.webhookUrl = webhookUrl;
     }
 
     public void setChannelIds(List<String> channelIds) {

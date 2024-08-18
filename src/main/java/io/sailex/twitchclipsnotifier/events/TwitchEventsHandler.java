@@ -2,21 +2,29 @@ package io.sailex.twitchclipsnotifier.events;
 
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.events.ChannelClipCreatedEvent;
-import io.sailex.twitchclipsnotifier.config.ConfigProperties;
+import com.github.twitch4j.helix.domain.Clip;
+import io.sailex.twitchclipsnotifier.clips.TwitchClipsHandler;
+import io.sailex.twitchclipsnotifier.config.TwitchConfigProperties;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TwitchEventsHandler {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(TwitchEventsHandler.class);
+    private final Logger LOGGER;
+
     private final TwitchClient twitchClient;
-    private final ConfigProperties configProperties;
+
+    private final TwitchConfigProperties twitchConfigProperties;
+
+    private final TwitchClipsHandler twitchClipsHandler;
 
     @Autowired
-    public TwitchEventsHandler(TwitchClient twitchClient, ConfigProperties configProperties) {
+    public TwitchEventsHandler(TwitchClient twitchClient, TwitchConfigProperties twitchConfigProperties,
+                               TwitchClipsHandler twitchClipsHandler, Logger LOGGER) {
         this.twitchClient = twitchClient;
-        this.configProperties = configProperties;
+        this.twitchConfigProperties = twitchConfigProperties;
+        this.twitchClipsHandler = twitchClipsHandler;
+        this.LOGGER = LOGGER;
     }
 
     public void registerEvents() {
@@ -25,13 +33,16 @@ public class TwitchEventsHandler {
     }
 
     private void enableEventListener() {
-        twitchClient.getClientHelper().enableClipEventListener(configProperties.getChannelIds());
+        twitchClient.getClientHelper().enableClipEventListener(twitchConfigProperties.getChannelIds());
     }
 
     private void handleEvents() {
-        twitchClient.getEventManager().onEvent(ChannelClipCreatedEvent.class, event ->
-                LOGGER.info("[{}] | [{}]", event.getChannel().getName(), event.getClip().getUrl())
-        );
+        twitchClient.getEventManager().onEvent(ChannelClipCreatedEvent.class, event -> {
+            Clip clip = event.getClip();
+            LOGGER.info("[{}] | [{}]", event.getChannel().getName(), clip.getUrl());
+            this.twitchClipsHandler.getCurrentClips().add(clip);
+            this.twitchClipsHandler.analyzeClip();
+        });
     }
 
 }
