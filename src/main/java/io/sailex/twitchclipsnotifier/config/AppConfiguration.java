@@ -2,23 +2,32 @@ package io.sailex.twitchclipsnotifier.config;
 
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
-import io.sailex.twitchclipsnotifier.rest.TwitchWebhookController;
+import io.sailex.twitchclipsnotifier.events.TwitchEventsHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AppConfig {
+public class AppConfiguration {
 
     @Bean
-    public TwitchWebhookController webhookController() {
-        return new TwitchWebhookController();
+    public ConfigProperties configProperties() {
+        return new ConfigProperties();
     }
 
     @Bean
-    public TwitchClient twitchClient() {
-        TwitchClient twitchClient = TwitchClientBuilder.builder().withEnableHelix(true).build();
-        twitchClient.getClientHelper().enableClipEventListener("twitch4j");
-        return twitchClient;
+    public TwitchClient twitchClient(ConfigProperties configProperties) {
+        return TwitchClientBuilder.builder()
+                .withEnableHelix(true)
+                .withClientId(configProperties.getClientId())
+                .withClientSecret(configProperties.getClientSecret())
+                .build();
+    }
+
+    @Bean
+    public TwitchEventsHandler twitchEventHandler(TwitchClient twitchClient, ConfigProperties configProperties) {
+        TwitchEventsHandler twitchEventsHandler = new TwitchEventsHandler(twitchClient, configProperties);
+        twitchEventsHandler.registerEvents();
+        return twitchEventsHandler;
     }
 
 }

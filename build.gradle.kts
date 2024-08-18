@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.sailex"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 
 java {
     toolchain {
@@ -22,6 +22,10 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("com.github.twitch4j:twitch4j:1.21.0")
+    compileOnly("org.projectlombok:lombok:0.11.0")
+
+    implementation("com.github.philippheuer.events4j:events4j-handler-spring:0.12.2")
 }
 
 tasks.withType<Test> {
