@@ -4,6 +4,7 @@ import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.helix.domain.Clip;
 import io.sailex.twitchclipsnotifier.config.TwitchConfigProperties;
 import io.sailex.twitchclipsnotifier.notification.NotificationBot;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class TwitchClipsHandler {
 
     private final List<Clip> currentClips = new ArrayList<>();
 
-    private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
 
     private final NotificationBot notificationBot;
 
@@ -43,7 +44,8 @@ public class TwitchClipsHandler {
 
     private void calculateRelevance(String clipId) {
         Clip clip = getClipOfId(clipId);
-        if (clip.getViewCount() > 5) {
+        LoggerFactory.getLogger("ClipsHandler").info("clip: [{}] views: [{}]", clip.getUrl(), clip.getViewCount());
+        if (clip.getViewCount() > twitchConfigProperties.getMinViewCount()) {
             notificationBot.sendClipNotification(clip.getBroadcasterName(), clip.getTitle(), clip.getUrl(), clip.getVodOffset());
         }
     }

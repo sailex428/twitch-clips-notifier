@@ -17,6 +17,16 @@ public class TwitchConfigProperties {
 
     private int delayClipEvaluation;
 
+    private int minViewCount;
+
+    public int getMinViewCount() {
+        return minViewCount;
+    }
+
+    public void setMinViewCount(int minViewCount) {
+        this.minViewCount = minViewCount;
+    }
+
     public int getDelayClipEvaluation() {
         return delayClipEvaluation;
     }
