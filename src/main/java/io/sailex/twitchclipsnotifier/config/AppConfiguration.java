@@ -40,19 +40,6 @@ public class AppConfiguration {
     }
 
     @Bean
-    public TwitchClipsHandler twitchClipsHandler(TwitchClient twitchClient, TwitchConfigProperties twitchConfigProperties, NotificationBot notificationBot) {
-        return new TwitchClipsHandler(twitchClient, twitchConfigProperties, notificationBot);
-    }
-
-    @Bean
-    public TwitchEventsHandler twitchEventHandler(TwitchClient twitchClient, Logger LOGGER,
-                                                  TwitchConfigProperties twitchConfigProperties, TwitchClipsHandler twitchClipsHandler) {
-        TwitchEventsHandler twitchEventsHandler = new TwitchEventsHandler(twitchClient, twitchConfigProperties, twitchClipsHandler, LOGGER);
-        twitchEventsHandler.registerEvents();
-        return twitchEventsHandler;
-    }
-
-    @Bean
     public NotificationBot notificationBot(TelegramConfigProperties telegramConfigProperties, Logger LOGGER) {
         return new NotificationBot(telegramConfigProperties, LOGGER);
     }
@@ -66,6 +53,19 @@ public class AppConfiguration {
             LOGGER.error("error occurred while registering notification bot.", e);
         }
         return botsApplication;
+    }
+
+    @Bean
+    public TwitchClipsHandler twitchClipsHandler(TwitchClient twitchClient, TwitchConfigProperties twitchConfigProperties, NotificationBot notificationBot) {
+        return new TwitchClipsHandler(twitchClient, twitchConfigProperties, notificationBot);
+    }
+
+    @Bean
+    public TwitchEventsHandler twitchEventHandler(TwitchClient twitchClient, Logger LOGGER,
+                                                  TwitchConfigProperties twitchConfigProperties, TwitchClipsHandler twitchClipsHandler) {
+        TwitchEventsHandler twitchEventsHandler = new TwitchEventsHandler(twitchClient, twitchConfigProperties, twitchClipsHandler, LOGGER);
+        twitchEventsHandler.registerEvents();
+        return twitchEventsHandler;
     }
 
 }

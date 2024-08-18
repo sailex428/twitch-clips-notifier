@@ -41,7 +41,7 @@ public class TwitchEventsHandler {
             Clip clip = event.getClip();
             LOGGER.info("[{}] | [{}]", event.getChannel().getName(), clip.getUrl());
             this.twitchClipsHandler.getCurrentClips().add(clip);
-            this.twitchClipsHandler.analyzeClip();
+            this.twitchClipsHandler.analyzeClip(clip.getId());
         });
     }
 

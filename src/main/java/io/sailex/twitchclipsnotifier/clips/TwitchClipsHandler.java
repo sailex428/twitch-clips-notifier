@@ -4,7 +4,6 @@ import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.helix.domain.Clip;
 import io.sailex.twitchclipsnotifier.config.TwitchConfigProperties;
 import io.sailex.twitchclipsnotifier.notification.NotificationBot;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -33,8 +32,7 @@ public class TwitchClipsHandler {
         this.notificationBot = notificationBot;
     }
 
-    public void analyzeClip() {
-        String clipId = currentClips.getLast().getId();
+    public void analyzeClip(String clipId) {
         executor.schedule(() ->
                 calculateRelevance(clipId),
                 twitchConfigProperties.getDelayClipEvaluation(),
@@ -44,9 +42,9 @@ public class TwitchClipsHandler {
 
     private void calculateRelevance(String clipId) {
         Clip clip = getClipOfId(clipId);
-        LoggerFactory.getLogger("ClipsHandler").info("clip: [{}] views: [{}]", clip.getUrl(), clip.getViewCount());
-        if (clip.getViewCount() > twitchConfigProperties.getMinViewCount()) {
-            notificationBot.sendClipNotification(clip.getBroadcasterName(), clip.getTitle(), clip.getUrl(), clip.getVodOffset());
+        if (clip.getViewCount() >= twitchConfigProperties.getMinViewCount()) {
+            notificationBot.sendClipNotification(clip.getBroadcasterName(), clip.getTitle(), clip.getUrl(),
+                    clip.getVodOffset() == null ? 0 : clip.getVodOffset());
         }
     }
 

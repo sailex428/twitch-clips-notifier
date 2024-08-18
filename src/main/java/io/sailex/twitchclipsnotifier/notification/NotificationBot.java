@@ -28,7 +28,7 @@ public class NotificationBot implements LongPollingSingleThreadUpdateConsumer {
         SendMessage message = SendMessage
                 .builder()
                 .chatId(config.getChannel())
-                .text(clipTitle + ", " + channelName + ", " + clipUrl + "[ " + vodOffset + " ]")
+                .text(clipTitle + "\n" + channelName + "\n" + clipUrl + "\n[ " + vodOffset + " ]")
                 .build();
         try {
             telegramClient.execute(message);
