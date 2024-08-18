@@ -43,8 +43,8 @@ public class TwitchClipsHandler {
 
     private void calculateRelevance(String clipId) {
         Clip clip = getClipOfId(clipId);
-        if (clip.getViewCount() > 0) {
-            notificationBot.sendClipNotification(clip.getCreatorName(), clip.getTitle(), clip.getUrl(), clip.getVodOffset());
+        if (clip.getViewCount() > 5) {
+            notificationBot.sendClipNotification(clip.getBroadcasterName(), clip.getTitle(), clip.getUrl(), clip.getVodOffset());
         }
     }
 
