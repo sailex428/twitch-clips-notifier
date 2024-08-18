@@ -1,4 +1,5 @@
-FROM ubuntu:latest
+FROM openjdk:21-jdk
+
 LABEL authors="sailex"
 
 WORKDIR clips-notifier
