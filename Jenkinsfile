@@ -28,7 +28,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '${env.DOCKER_CREDENTIALS_ID}', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]) {
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]) {
                         sh 'docker build -t twitch-clips-notifier:${env.VERSION} .'
                         sh 'docker tag twitch-clips-notifier:${env.VERSION} DOCKER_USERNAME/twitch-clips-notifier:${env.VERSION}'
                         sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
