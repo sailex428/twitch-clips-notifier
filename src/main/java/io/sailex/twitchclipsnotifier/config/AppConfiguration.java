@@ -56,8 +56,8 @@ public class AppConfiguration {
     }
 
     @Bean
-    public TwitchClipsHandler twitchClipsHandler(TwitchClient twitchClient, TwitchConfigProperties twitchConfigProperties, NotificationBot notificationBot) {
-        return new TwitchClipsHandler(twitchClient, twitchConfigProperties, notificationBot);
+    public TwitchClipsHandler twitchClipsHandler(TwitchClient twitchClient, TwitchConfigProperties twitchConfigProperties, NotificationBot notificationBot, Logger LOGGER) {
+        return new TwitchClipsHandler(twitchClient, twitchConfigProperties, notificationBot, LOGGER);
     }
 
     @Bean

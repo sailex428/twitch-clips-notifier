@@ -26,7 +26,6 @@ dependencies {
     implementation("com.github.philippheuer.events4j:events4j-handler-spring:0.12.2")
     implementation("org.telegram:telegrambots-longpolling:7.9.0")
     implementation("org.telegram:telegrambots-client:7.9.0")
-    implementation("org.telegram:telegrambots-abilities:7.8.0")
 }
 
 tasks.withType<Test> {

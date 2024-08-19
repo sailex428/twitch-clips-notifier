@@ -4,11 +4,13 @@ import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.helix.domain.Clip;
 import io.sailex.twitchclipsnotifier.config.TwitchConfigProperties;
 import io.sailex.twitchclipsnotifier.notification.NotificationBot;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -25,11 +27,14 @@ public class TwitchClipsHandler {
 
     private final NotificationBot notificationBot;
 
+    private final Logger LOGGER;
+
     @Autowired
-    public TwitchClipsHandler(TwitchClient twitchClient, TwitchConfigProperties twitchConfigProperties, NotificationBot notificationBot) {
+    public TwitchClipsHandler(TwitchClient twitchClient, TwitchConfigProperties twitchConfigProperties, NotificationBot notificationBot, Logger LOGGER) {
         this.twitchClient = twitchClient;
         this.twitchConfigProperties = twitchConfigProperties;
         this.notificationBot = notificationBot;
+        this.LOGGER = LOGGER;
     }
 
     public void analyzeClip(String clipId) {
@@ -49,10 +54,15 @@ public class TwitchClipsHandler {
     }
 
     private Clip getClipOfId(String clipId) {
-        return twitchClient.getHelix().getClips(
-                null, null, null,
-                Collections.singletonList(clipId), null, null, null,
-                null, null, null).execute().getData().getFirst();
+        try {
+            return twitchClient.getHelix().getClips(
+                    null, null, null,
+                    Collections.singletonList(clipId), null, null, null,
+                    null, null, null).queue().get().getData().getLast();
+        } catch (InterruptedException | ExecutionException e) {
+            LOGGER.error("failed to get clip {}", clipId, e);
+            return new Clip();
+        }
     }
 
     public List<Clip> getCurrentClips() {
