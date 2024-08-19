@@ -32,6 +32,7 @@ public class NotificationBot implements LongPollingSingleThreadUpdateConsumer {
                 .build();
         try {
             telegramClient.execute(message);
+            LOGGER.info("relevant clip [{}] | [{}] | [{}]", channelName, clipTitle, clipUrl);
         } catch (TelegramApiException e) {
             LOGGER.error("error sending message {} to client", message.getText(), e);
         }

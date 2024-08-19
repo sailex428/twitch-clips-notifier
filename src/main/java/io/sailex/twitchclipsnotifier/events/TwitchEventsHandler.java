@@ -39,7 +39,7 @@ public class TwitchEventsHandler {
     private void handleEvents() {
         twitchClient.getEventManager().onEvent(ChannelClipCreatedEvent.class, event -> {
             Clip clip = event.getClip();
-            LOGGER.info("[{}] | [{}]", event.getChannel().getName(), clip.getUrl());
+            LOGGER.info("new clip [{}] | [{}]", event.getChannel().getName(), clip.getUrl());
             this.twitchClipsHandler.getCurrentClips().add(clip);
             this.twitchClipsHandler.analyzeClip(clip.getId());
         });
