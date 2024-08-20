@@ -1,6 +1,6 @@
 FROM openjdk:21-jdk
-
 LABEL authors="sailex"
+ENV TZ=Europe/Berlin
 
 WORKDIR clips-notifier
 

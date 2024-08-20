@@ -49,6 +49,7 @@ public class AppConfiguration {
         TelegramBotsLongPollingApplication botsApplication = new TelegramBotsLongPollingApplication();
         try {
             botsApplication.registerBot(telegramConfigProperties.getBotToken(), notificationBot);
+            LOGGER.info("Registered bot successfully");
         } catch (TelegramApiException e) {
             LOGGER.error("error occurred while registering notification bot.", e);
         }
