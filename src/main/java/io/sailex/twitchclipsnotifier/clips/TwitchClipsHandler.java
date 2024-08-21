@@ -23,7 +23,7 @@ public class TwitchClipsHandler {
 
     private final List<Clip> currentClips = new ArrayList<>();
 
-    private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(5);
+    private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(20);
 
     private final NotificationBot notificationBot;
 
