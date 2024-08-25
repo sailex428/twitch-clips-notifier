@@ -62,9 +62,9 @@ public class AppConfiguration {
     }
 
     @Bean
-    public TwitchEventsHandler twitchEventHandler(TwitchClient twitchClient, Logger LOGGER,
+    public TwitchEventsHandler twitchEventHandler(TwitchClient twitchClient,
                                                   TwitchConfigProperties twitchConfigProperties, TwitchClipsHandler twitchClipsHandler) {
-        TwitchEventsHandler twitchEventsHandler = new TwitchEventsHandler(twitchClient, twitchConfigProperties, twitchClipsHandler, LOGGER);
+        TwitchEventsHandler twitchEventsHandler = new TwitchEventsHandler(twitchClient, twitchConfigProperties, twitchClipsHandler);
         twitchEventsHandler.registerEvents();
         return twitchEventsHandler;
     }
