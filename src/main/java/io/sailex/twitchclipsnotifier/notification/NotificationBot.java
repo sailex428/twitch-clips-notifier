@@ -10,7 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-
 public class NotificationBot implements LongPollingSingleThreadUpdateConsumer {
 
     private final Logger LOGGER;
@@ -24,19 +23,19 @@ public class NotificationBot implements LongPollingSingleThreadUpdateConsumer {
         telegramClient = new OkHttpTelegramClient(telegramConfigProperties.getBotToken());
     }
 
-    public void sendClipNotification(String channelName, String clipTitle, String clipUrl, int vodOffset) {
-        SendMessage message = SendMessage
-                .builder()
-                .chatId(config.getChannel())
-                .text(clipTitle + "\n" + channelName + "\n" + clipUrl + "\n[ " + vodOffset + " ]")
-                .build();
+    public void sendClipNotification(
+            String channelName, String clipTitle, String clipUrl, int vodOffset) {
+        SendMessage message =
+                SendMessage.builder()
+                        .chatId(config.getChannel())
+                        .text(clipTitle + "\n" + channelName + "\n" + clipUrl + "\n[ " + vodOffset + " ]")
+                        .build();
         try {
             telegramClient.execute(message);
             LOGGER.info("relevant clip [{}] | [{}] | [{}]", channelName, clipTitle, clipUrl);
         } catch (TelegramApiException e) {
             LOGGER.error("error sending message {} to client", message.getText(), e);
         }
-
     }
 
     @Override

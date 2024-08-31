@@ -16,8 +16,10 @@ public class TwitchEventsHandler {
     private final TwitchClipsHandler twitchClipsHandler;
 
     @Autowired
-    public TwitchEventsHandler(TwitchClient twitchClient, TwitchConfigProperties twitchConfigProperties,
-                               TwitchClipsHandler twitchClipsHandler) {
+    public TwitchEventsHandler(
+            TwitchClient twitchClient,
+            TwitchConfigProperties twitchConfigProperties,
+            TwitchClipsHandler twitchClipsHandler) {
         this.twitchClient = twitchClient;
         this.twitchConfigProperties = twitchConfigProperties;
         this.twitchClipsHandler = twitchClipsHandler;
@@ -33,11 +35,14 @@ public class TwitchEventsHandler {
     }
 
     private void handleEvents() {
-        twitchClient.getEventManager().onEvent(ChannelClipCreatedEvent.class, event -> {
-            Clip clip = event.getClip();
-            this.twitchClipsHandler.getCurrentClips().add(clip);
-            this.twitchClipsHandler.analyzeClip(clip.getId());
-        });
+        twitchClient
+                .getEventManager()
+                .onEvent(
+                        ChannelClipCreatedEvent.class,
+                        event -> {
+                            Clip clip = event.getClip();
+                            this.twitchClipsHandler.getCurrentClips().add(clip);
+                            this.twitchClipsHandler.analyzeClip(clip.getId());
+                        });
     }
-
 }

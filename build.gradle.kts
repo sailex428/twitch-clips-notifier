@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.3.2"
     id("io.spring.dependency-management") version "1.1.6"
+    id("com.diffplug.spotless") version "7.0.0.BETA2"
 }
 
 group = "io.sailex"
@@ -16,6 +17,15 @@ java {
 repositories {
     mavenCentral()
 }
+
+spotless {
+    java {
+        googleJavaFormat("1.23.0")
+        indentWithTabs(2)
+        indentWithSpaces(4)
+    }
+}
+
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")

@@ -40,12 +40,16 @@ public class AppConfiguration {
     }
 
     @Bean
-    public NotificationBot notificationBot(TelegramConfigProperties telegramConfigProperties, Logger LOGGER) {
+    public NotificationBot notificationBot(
+            TelegramConfigProperties telegramConfigProperties, Logger LOGGER) {
         return new NotificationBot(telegramConfigProperties, LOGGER);
     }
 
     @Bean
-    public TelegramBotsLongPollingApplication botsApplication(NotificationBot notificationBot, TelegramConfigProperties telegramConfigProperties, Logger LOGGER) {
+    public TelegramBotsLongPollingApplication botsApplication(
+            NotificationBot notificationBot,
+            TelegramConfigProperties telegramConfigProperties,
+            Logger LOGGER) {
         TelegramBotsLongPollingApplication botsApplication = new TelegramBotsLongPollingApplication();
         try {
             botsApplication.registerBot(telegramConfigProperties.getBotToken(), notificationBot);
@@ -57,16 +61,22 @@ public class AppConfiguration {
     }
 
     @Bean
-    public TwitchClipsHandler twitchClipsHandler(TwitchClient twitchClient, TwitchConfigProperties twitchConfigProperties, NotificationBot notificationBot, Logger LOGGER) {
+    public TwitchClipsHandler twitchClipsHandler(
+            TwitchClient twitchClient,
+            TwitchConfigProperties twitchConfigProperties,
+            NotificationBot notificationBot,
+            Logger LOGGER) {
         return new TwitchClipsHandler(twitchClient, twitchConfigProperties, notificationBot, LOGGER);
     }
 
     @Bean
-    public TwitchEventsHandler twitchEventHandler(TwitchClient twitchClient,
-                                                  TwitchConfigProperties twitchConfigProperties, TwitchClipsHandler twitchClipsHandler) {
-        TwitchEventsHandler twitchEventsHandler = new TwitchEventsHandler(twitchClient, twitchConfigProperties, twitchClipsHandler);
+    public TwitchEventsHandler twitchEventHandler(
+            TwitchClient twitchClient,
+            TwitchConfigProperties twitchConfigProperties,
+            TwitchClipsHandler twitchClipsHandler) {
+        TwitchEventsHandler twitchEventsHandler =
+                new TwitchEventsHandler(twitchClient, twitchConfigProperties, twitchClipsHandler);
         twitchEventsHandler.registerEvents();
         return twitchEventsHandler;
     }
-
 }

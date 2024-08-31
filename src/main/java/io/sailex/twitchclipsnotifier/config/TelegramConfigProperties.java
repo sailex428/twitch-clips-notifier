@@ -36,5 +36,4 @@ public class TelegramConfigProperties {
     public void setBotToken(String botToken) {
         this.botToken = botToken;
     }
-
 }

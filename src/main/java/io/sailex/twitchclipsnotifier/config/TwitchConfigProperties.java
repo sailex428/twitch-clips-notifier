@@ -1,9 +1,8 @@
 package io.sailex.twitchclipsnotifier.config;
 
+import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.List;
 
 @Configuration
 @ConfigurationProperties(prefix = "twitch")
@@ -58,5 +57,4 @@ public class TwitchConfigProperties {
     public String getClientId() {
         return clientId;
     }
-
 }
